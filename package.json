@@ -1,7 +1,7 @@
 {
   "name": "attache-upload",
   "version": "1.1.0",
-  "description": "Upload your files to attache",
+  "description": "Upload files to your attache server.",
   "main": "./lib/index.js",
   "scripts": {
     "clean": "rm -rf ./lib/*",
