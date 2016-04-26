@@ -1,4 +1,9 @@
 # attache-upload.js
+
+[![NPM version][npm-image]][npm-url]
+[![build status][travis-image]][travis-url]
+[![js-standard-style][standard-image]][standard-url]
+
 Upload your files to [attache](https://github.com/choonkeat/attache).
 
 ### Example
@@ -60,3 +65,10 @@ On success, this request will return:
 * `content_type`
 * `geometry`
 * `bytes`
+
+[npm-image]: https://img.shields.io/npm/v/attache-upload.svg?style=flat-square
+[npm-url]: https://npmjs.org/package/attache-upload
+[travis-image]: https://img.shields.io/travis/icelab/attache-upload.svg?style=flat-square
+[travis-url]: https://travis-ci.org/icelab/attache-upload
+[standard-image]: https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat-square
+[standard-url]: https://github.com/feross/standard
