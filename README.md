@@ -1,5 +1,5 @@
 # attache-upload.js
-Upload your files to attache.
+Upload your files to [attache](https://github.com/choonkeat/attache).
 
 ### Example
 ```js
