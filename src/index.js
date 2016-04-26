@@ -1,5 +1,5 @@
 require('es6-promise').polyfill()
-import * as request from 'superagent'
+import request from 'superagent'
 import bus from 'bus'
 
 /**

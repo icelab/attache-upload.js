@@ -1,6 +1,6 @@
 
 import test from 'blue-tape'
-import { upload, preSign } from './index.js'
+import { upload, preSign } from './src'
 
 const token = ''
 const url = 'www.foo.com'
