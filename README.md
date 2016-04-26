@@ -39,7 +39,7 @@ presign(presign_url)
 #### presign(options)
 
  * `presign_url` - required, a URL to perform a presign request.
- * `token` - optional, X-CSRF-Token value.
+ * `token` - optional, `X-CSRF-Token` value.
 
 On success, this request will return:
 
