@@ -172,10 +172,10 @@ function presignRequest (presignUrl, token) {
 /**
  * presign
  * Take a url and optional token
- * return a Promise that makes a presignRequest()
+ * return a Promise
  * @param  {String} presignUrl
  * @param  {String} token
- * @param  {Function} defaults to preSignRequest()
+ * @param  {Function} defaults to presignRequest()
  * @param  {Promise}
  */
 
