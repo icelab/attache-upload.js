@@ -4,7 +4,7 @@
 [![build status][travis-image]][travis-url]
 [![js-standard-style][standard-image]][standard-url]
 
-Upload your files to [attache](https://github.com/choonkeat/attache).
+Upload files to your [attache](https://github.com/choonkeat/attache) server.
 
 ### Example
 ```js
