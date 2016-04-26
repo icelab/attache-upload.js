@@ -84,14 +84,13 @@ function buildUploadURL (url, uuid, expiration, hmac, filename) {
 /**
  * uploadRequest
  * Assign an XHR request to the `reqs` hash using the `uid`.
- * @param  {Object} res - the response from preSignXHR()
+ * @param  {Object} res - the response from presignRequest()
  * @param  {File Object} file
- * @param  {String} token
  * @param  {Function} on progress event handler
  * @return  {Promise}
  */
 
-function uploadRequest (res, fileObject, token, showProgress) {
+function uploadRequest (res, fileObject, showProgress) {
   const { url, expiration, hmac, uuid } = res
   const { file, uid } = fileObject
   const uploadURL = buildUploadURL(url, uuid, expiration, hmac, file.name)
@@ -102,12 +101,9 @@ function uploadRequest (res, fileObject, token, showProgress) {
       .send(file)
       .set({
         'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'X-CSRF-Token': token
+        'Content-Type': 'application/json'
       })
       .on('progress', (e) => {
-        // send the `uid` back so we can assign it to
-        // the preview's `x` button for aborting requests
         showProgress(e, file)
       })
       .end((err, res) => {
@@ -126,19 +122,18 @@ function uploadRequest (res, fileObject, token, showProgress) {
 
 /**
  * upload
- * Take a response object (from preSignRequest) a file and a token
+ * Take a response object (from presignRequest) a file and a token
  * and return a Promise that makes an uploadRequest()
- * @param  {Object} res - the response from preSignRequest()
+ * @param  {Object} res - the response from presignRequest()
  * @param  {File Object} file
- * @param  {String} token
  * @param  {Function} showProgress - progress event handler
  * @param  {Function} fn - defaults to uploadRequest()
  * @return {Promise}
  */
 
-function upload (res, file, token, showProgress = noOp, fn = uploadRequest) {
+function upload (res, file, showProgress = noOp, fn = uploadRequest) {
   return new Promise((resolve, reject) => {
-    fn(res, file, token, showProgress)
+    fn(res, file, showProgress)
       .then(checkStatus)
       .then(parseJSON)
       .then((res) => {
@@ -151,25 +146,17 @@ function upload (res, file, token, showProgress = noOp, fn = uploadRequest) {
 }
 
 /**
- * preSignRequest
+ * presignRequest
  * Perform an XHR request and Resolve or Reject
- * @param  {File Object} file
  * @param  {String} presignUrl
  * @param  {String} token
  * @param  {Promise}
  */
 
-function preSignRequest (fileObject, presignUrl, token) {
-  const { file } = fileObject
-  const data = file ? [{
-    'file_name': file.name,
-    'content_type': file.type
-  }] : []
-
+function presignRequest (presignUrl, token) {
   return new Promise((resolve, reject) => {
     request
       .post(presignUrl)
-      .send(data)
       .set({
         'Accept': 'application/json',
         'Content-Type': 'application/json',
@@ -183,19 +170,18 @@ function preSignRequest (fileObject, presignUrl, token) {
 }
 
 /**
- * preSign
- * Take a file, url and
- * return a Promise that makes a preSignRequest()
- * @param  {File Object} file
+ * presign
+ * Take a url and optional token
+ * return a Promise that makes a presignRequest()
  * @param  {String} presignUrl
  * @param  {String} token
  * @param  {Function} defaults to preSignRequest()
  * @param  {Promise}
  */
 
-function preSign (file, presignUrl, token, fn = preSignRequest) {
+function presign (presignUrl, token, fn = presignRequest) {
   return new Promise((resolve, reject) => {
-    fn(file, presignUrl, token)
+    fn(presignUrl, token)
       .then(checkStatus)
       .then(parseJSON)
       .then((res) => {
@@ -208,6 +194,6 @@ function preSign (file, presignUrl, token, fn = preSignRequest) {
 }
 
 export {
-  preSign,
+  presign,
   upload
 }

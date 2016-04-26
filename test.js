@@ -1,6 +1,6 @@
 
 import test from 'blue-tape'
-import { upload, preSign } from './src'
+import { upload, presign } from './src'
 
 const token = ''
 const url = 'www.foo.com'
@@ -26,18 +26,22 @@ const files = [{
 
 test('presign:', (nest) => {
   nest.test('...returns a promise', (t) => {
-    return preSign(files, url, token, fakeXHRResponse)
+    return presign(url, token, fakeXHRResponse)
+  })
+
+  nest.test('...returns a promise without a token param', (t) => {
+    return presign(url, null, fakeXHRResponse)
   })
 
   nest.test('...should fail', (t) => {
-    return t.shouldFail(preSign(files, url, token, fakeXHRResponse)
+    return t.shouldFail(presign(url, token, fakeXHRResponse)
       .then(() => {
         throw new Error('Failed!')
       }))
   })
 
   nest.test('...should return a response', (t) => {
-    preSign(files, url, token, fakeXHRResponse)
+    presign(url, token, fakeXHRResponse)
       .then((res) => {
         t.equal(res.foo, 'bar')
         t.end()
@@ -53,7 +57,7 @@ test('presign:', (nest) => {
       })
     }
 
-    return t.shouldFail(preSign(files, url, token, fakeXHRResponse))
+    return t.shouldFail(presign(url, token, fakeXHRResponse))
   })
 })
 
@@ -71,17 +75,17 @@ test('upload:', (nest) => {
   }
 
   nest.test('...returns a promise', (t) => {
-    return upload(presignResponse, files, token, showProgress, fakeXHRResponse)
+    return upload(presignResponse, files, showProgress, fakeXHRResponse)
   })
 
   nest.test('...should fail', (t) => {
-    return t.shouldFail(upload(presignResponse, files, token, showProgress, fakeXHRResponse).then(() => {
+    return t.shouldFail(upload(presignResponse, files, showProgress, fakeXHRResponse).then(() => {
       throw new Error('Failed!')
     }))
   })
 
   nest.test('...should return a response', (t) => {
-    upload(presignResponse, files, token, showProgress, fakeXHRResponse)
+    upload(presignResponse, files, showProgress, fakeXHRResponse)
       .then((res) => {
         t.equal(res.baz, 'qux')
         t.end()
@@ -97,6 +101,6 @@ test('upload:', (nest) => {
       })
     }
 
-    return t.shouldFail(upload(files, url, token, fakeXHRResponse))
+    return t.shouldFail(upload(files, url, fakeXHRResponse))
   })
 })

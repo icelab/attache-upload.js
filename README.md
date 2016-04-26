@@ -3,9 +3,9 @@ Upload your files to attache.
 
 ### Example
 ```js
-import {upload, preSign} from 'attache-upload'
+import {upload, presign} from 'attache-upload'
 
-preSign(fileObject, presign_url)
+presign(presign_url)
   .then((presignResponse) => {
 
     // presignResponse:
@@ -36,9 +36,8 @@ preSign(fileObject, presign_url)
 
 ## API Documentation
 
-#### preSign(options)
+#### presign(options)
 
- * `fileObject` - required, the file to be uploaded.
  * `presign_url` - required, a URL to perform a preSign request.
  * `token` - optional, X-CSRF-Token value.
 
@@ -46,5 +45,4 @@ preSign(fileObject, presign_url)
 
  * `presignResponse` - required, response object passed in from preSign request.
  * `fileObject` - required, the file to be uploaded.
- * `token` - optional, X-CSRF-Token value.
  * `onProgress` - optional, 'onProgress' function.
