@@ -1,6 +1,6 @@
 {
   "name": "attache-upload",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Upload your files to attache",
   "main": "./lib/index.js",
   "scripts": {
