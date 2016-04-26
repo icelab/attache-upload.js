@@ -68,7 +68,7 @@ On success, this request will return:
 
 [npm-image]: https://img.shields.io/npm/v/attache-upload.svg?style=flat-square
 [npm-url]: https://npmjs.org/package/attache-upload
-[travis-image]: https://img.shields.io/travis/icelab/attache-upload.svg?style=flat-square
-[travis-url]: https://travis-ci.org/icelab/attache-upload
+[travis-image]: https://img.shields.io/travis/icelab/attache-upload.js.svg?style=flat-square
+[travis-url]: https://travis-ci.org/icelab/attache-upload.js
 [standard-image]: https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat-square
 [standard-url]: https://github.com/feross/standard
