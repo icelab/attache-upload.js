@@ -10,7 +10,7 @@ presign(presign_url)
 
     // presignResponse:
     // {
-    //   url: "http://some_url/upload",
+    //   url: "http://path_to_your_attache_serve/upload",
     //   uuid: "5f0d4d62-e082-4cdf-a143-26258de59c47",
     //   expiration: 1461649282,
     //   hmac: "fd89637821afca1787dfe458be29bc87f0366122"
@@ -38,11 +38,25 @@ presign(presign_url)
 
 #### presign(options)
 
- * `presign_url` - required, a URL to perform a preSign request.
+ * `presign_url` - required, a URL to perform a presign request.
  * `token` - optional, X-CSRF-Token value.
+
+On success, this request will return:
+
+ * `url` - the URL to the `/upload` API of your attache serve
+ * `uuid` - a uuid string
+ * `expiration` - a unix timestamp of a future time
+ * `hmac` - the `HMAC-SHA1` of your `SECRET_KEY`
 
 #### upload(options)
 
- * `presignResponse` - required, response object passed in from preSign request.
+ * `presignResponse` - required, response object passed in from presign request.
  * `fileObject` - required, the file to be uploaded.
- * `onProgress` - optional, 'onProgress' function.
+ * `onProgress` - optional, `onProgress` function.
+
+On success, this request will return:
+
+* `path` - a unique path for the uploaded file
+* `content_type`
+* `geometry`
+* `bytes`
