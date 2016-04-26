@@ -15,14 +15,14 @@ const fakeXHRResponse = function (file, url, token, showProgress) {
   })
 }
 
-const files = [{
+const file = {
   name: 'W1004855.jpg',
   lastModified: 1458086083000,
   lastModifiedDate: new Date(),
   webkitRelativePath: '',
   size: 214179,
   type: 'image/jpeg'
-}]
+}
 
 test('presign:', (nest) => {
   nest.test('...returns a promise', (t) => {
@@ -51,7 +51,7 @@ test('presign:', (nest) => {
   nest.test('...should fail on 500', (t) => {
     let failedStatus = Object.assign({}, serverResponse, {status: 500})
 
-    const fakeXHRResponse = function (files, url, token) {
+    const fakeXHRResponse = function (file, url, token) {
       return new Promise((resolve, reject) => {
         resolve(failedStatus)
       })
@@ -75,17 +75,17 @@ test('upload:', (nest) => {
   }
 
   nest.test('...returns a promise', (t) => {
-    return upload(presignResponse, files, showProgress, fakeXHRResponse)
+    return upload(presignResponse, file, showProgress, fakeXHRResponse)
   })
 
   nest.test('...should fail', (t) => {
-    return t.shouldFail(upload(presignResponse, files, showProgress, fakeXHRResponse).then(() => {
+    return t.shouldFail(upload(presignResponse, file, showProgress, fakeXHRResponse).then(() => {
       throw new Error('Failed!')
     }))
   })
 
   nest.test('...should return a response', (t) => {
-    upload(presignResponse, files, showProgress, fakeXHRResponse)
+    upload(presignResponse, file, showProgress, fakeXHRResponse)
       .then((res) => {
         t.equal(res.baz, 'qux')
         t.end()
@@ -101,6 +101,6 @@ test('upload:', (nest) => {
       })
     }
 
-    return t.shouldFail(upload(files, url, fakeXHRResponse))
+    return t.shouldFail(upload(file, url, fakeXHRResponse))
   })
 })
