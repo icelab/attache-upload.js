@@ -33,21 +33,37 @@ bus.on('abortUploadRequest', (uid) => {
 })
 
 /**
- * checkStatus
- * take a response and check it's `status` property
- * if between 200-300 return the response object
- * else throw an error
- * @param  {[type]} res [description]
- * @return {[type]}     [description]
+ * customError
+ * return an object forming a custom error message
+ * @param  {String} name
+ * @param  {Object} error
+ * @return {Object}
  */
 
-function checkStatus (res) {
+function customError (name, error) {
+  return {
+    error,
+    message: error.message,
+    name
+  }
+}
+
+/**
+ * responseStatus
+ * take a response and check it's `status` property
+ * if between 200-300 return the response object
+ * else throw a custom error
+ * @param  {Object} res
+ * @return {Object}
+ */
+
+function responseStatus (res) {
   if (res.status >= 200 && res.status < 300) {
     return res
   } else {
     let error = new Error(res.statusText)
     error.response = res
-    throw error
+    throw customError ('responseStatus', error)
   }
 }
 
@@ -70,7 +86,7 @@ function parseJSON (res, url) {
  * @param  {String} expiration
  * @param  {String} hmac
  * @param  {String} filename
- * @return {[String}
+ * @return {String}
  */
 
 function buildUploadURL (url, uuid, expiration, hmac, filename) {
@@ -93,6 +109,7 @@ function buildUploadURL (url, uuid, expiration, hmac, filename) {
 function uploadRequest (res, fileObject, showProgress) {
   const { url, expiration, hmac, uuid } = res
   const { file, uid } = fileObject
+
   const uploadURL = buildUploadURL(url, uuid, expiration, hmac, file.name)
 
   return new Promise((resolve, reject) => {
@@ -108,7 +125,9 @@ function uploadRequest (res, fileObject, showProgress) {
       })
       .end((err, res) => {
         delete reqs[uid]
-        if (err) reject(err)
+
+        // throw a custom error message
+        if (err) return reject(customError('uploadRequest', err))
 
         // append the `uploadURL` to the response
         let response = Object.assign({}, res)
@@ -134,7 +153,7 @@ function uploadRequest (res, fileObject, showProgress) {
 function upload (res, file, showProgress = noOp, fn = uploadRequest) {
   return new Promise((resolve, reject) => {
     fn(res, file, showProgress)
-      .then(checkStatus)
+      .then(responseStatus)
       .then(parseJSON)
       .then((res) => {
         resolve(res)
@@ -163,7 +182,8 @@ function presignRequest (presignUrl, token) {
         'X-CSRF-Token': token
       })
       .end((err, res) => {
-        if (err) reject(err)
+        // throw a custom error message
+        if (err) return reject(customError('presignRequest', err))
         resolve(res)
       })
   })
@@ -182,7 +202,7 @@ function presignRequest (presignUrl, token) {
 function presign (presignUrl, token, fn = presignRequest) {
   return new Promise((resolve, reject) => {
     fn(presignUrl, token)
-      .then(checkStatus)
+      .then(responseStatus)
       .then(parseJSON)
       .then((res) => {
         resolve(res)
