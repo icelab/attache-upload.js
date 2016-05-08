@@ -66,6 +66,47 @@ On success, this request will return:
 * `geometry`
 * `bytes`
 
+### Errors
+
+Both `presign` the `upload` methods will return a custom error objects if either `promise` is rejected.
+
+The XHR requests for each method will return a custom `responseStatus` error message if the response status is not between `200` and `300`.
+
+This allows us to check for specific errors in our upload process.
+
+The custom error objects look like this:
+
+```js
+{
+  error: {original error object},
+  message: 'No Authorised'
+  name: 'uploadRequest'
+}
+```
+
+### Example
+```js
+import {upload, presign} from 'attache-upload'
+
+presign(presign_url)
+  .then((presignResponse) => {
+    return upload(presignResponse, fileObject)
+  })
+  .then((uploadResponse) => {
+    return doSomethingWithResponse(uploadResponse)
+  })
+  .catch((err) => {
+    // check is the error was with our upload process
+    const {name} = err
+    if (name === 'presignRequest' || name === 'uploadRequest' || name = 'responseStatus') {
+      doSomethingWithErrorMessage(err)
+    } else {
+      // otherwise throw the error
+      throw err
+    }
+  })
+```
+
 [npm-image]: https://img.shields.io/npm/v/attache-upload.svg?style=flat-square
 [npm-url]: https://npmjs.org/package/attache-upload
 [travis-image]: https://img.shields.io/travis/icelab/attache-upload.js.svg?style=flat-square
