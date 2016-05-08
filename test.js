@@ -24,6 +24,10 @@ const file = {
   type: 'image/jpeg'
 }
 
+/**
+ * presign
+ */
+
 test('presign:', (nest) => {
   nest.test('...returns a promise', (t) => {
     return presign(url, token, fakeXHRResponse)
@@ -60,6 +64,10 @@ test('presign:', (nest) => {
     return t.shouldFail(presign(url, token, fakeXHRResponse))
   })
 })
+
+/**
+ * Upload
+ */
 
 test('upload:', (nest) => {
   const presignResponse = {
