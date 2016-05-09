@@ -1,6 +1,6 @@
 
 import test from 'blue-tape'
-import { upload, presign } from './src'
+import { upload, presign, customError } from './src'
 
 const token = ''
 const url = 'www.foo.com'
@@ -63,6 +63,22 @@ test('presign:', (nest) => {
 
     return t.shouldFail(presign(url, token, fakeXHRResponse))
   })
+
+  nest.test('...should return custom error message on 500', (t) => {
+    let failedStatus = Object.assign({}, serverResponse, {status: 500})
+
+    const fakeXHRResponse = function (file, url, token) {
+      return new Promise((resolve, reject) => {
+        resolve(failedStatus)
+      })
+    }
+
+    presign(url, token, fakeXHRResponse)
+      .catch((err) => {
+        t.equal(err.name, 'responseStatus')
+        t.end()
+      })
+  })
 })
 
 /**
@@ -110,5 +126,37 @@ test('upload:', (nest) => {
     }
 
     return t.shouldFail(upload(file, url, fakeXHRResponse))
+  })
+
+  nest.test('...should return custom error message on 500', (t) => {
+    let failedStatus = Object.assign({}, serverResponse, {status: 500})
+
+    const fakeXHRResponse = function (file, url, token) {
+      return new Promise((resolve, reject) => {
+        resolve(failedStatus)
+      })
+    }
+
+    upload(presignResponse, file, showProgress, fakeXHRResponse)
+      .catch((err) => {
+        t.equal(err.name, 'responseStatus')
+        t.end()
+      })
+  })
+})
+
+/**
+ * Custom error message
+ */
+
+test('Custom error message:', (nest) => {
+  nest.test('...should return custom error object', (t) => {
+    const errorObject = {
+      message: 'Custom error message'
+    }
+
+    const error = customError('presignRequest', errorObject)
+    t.equal(error.name, 'presignRequest')
+    t.end()
   })
 })
