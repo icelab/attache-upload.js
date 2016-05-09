@@ -98,7 +98,7 @@ presign(presign_url)
   .catch((err) => {
     // check is the error was with our upload process
     const {name} = err
-    if (name === 'presignRequest' || name === 'uploadRequest' || name = 'responseStatus') {
+    if (name === 'presignRequest' || name === 'uploadRequest' || name === 'responseStatus') {
       doSomethingWithErrorMessage(err)
     } else {
       // otherwise throw the error
