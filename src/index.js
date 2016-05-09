@@ -109,7 +109,6 @@ function buildUploadURL (url, uuid, expiration, hmac, filename) {
 function uploadRequest (res, fileObject, showProgress) {
   const { url, expiration, hmac, uuid } = res
   const { file, uid } = fileObject
-
   const uploadURL = buildUploadURL(url, uuid, expiration, hmac, file.name)
 
   return new Promise((resolve, reject) => {
@@ -215,5 +214,6 @@ function presign (presignUrl, token, fn = presignRequest) {
 
 export {
   presign,
-  upload
+  upload,
+  customError
 }
