@@ -1,6 +1,6 @@
 {
   "name": "attache-upload",
-  "version": "1.2.0",
+  "version": "2.0.0",
   "description": "Upload files to your attache server.",
   "main": "./lib/index.js",
   "scripts": {
@@ -36,7 +36,6 @@
     "standard": "^6.0.8"
   },
   "dependencies": {
-    "bus": "component/bus",
     "es6-promise": "^3.1.2",
     "superagent": "^1.8.3"
   }

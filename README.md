@@ -66,6 +66,10 @@ On success, this request will return:
 * `geometry`
 * `bytes`
 
+### Cancelling XHR requests
+
+
+
 ### Errors
 
 Both `presign` the `upload` methods will return a custom error objects if either `promise` is rejected.

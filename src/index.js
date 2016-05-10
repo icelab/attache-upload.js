@@ -1,6 +1,5 @@
 require('es6-promise').polyfill()
 import request from 'superagent'
-import bus from 'bus'
 
 /**
  * noOp
@@ -18,19 +17,28 @@ const noOp = (_) => {}
 let reqs = {}
 
 /**
- * abortUploadRequest
- * Fired from a preview elements `x` button, passing in it's data-uid attribute value
- * Search the `reqs` hash for an existing request of the same name and
- * abort() and delete it
+ * getXHRRequests
+ * Get the current XHR processing XHR requests
+ * @return {Object}
  */
 
-bus.on('abortUploadRequest', (uid) => {
+function getXHRRequests () {
+  return reqs
+}
+
+/**
+ * deleteXHRRequest
+ * Abort a XHR request by 'uid'
+ * @param  {String} uid
+ */
+
+function deleteXHRRequest (uid) {
   if (reqs.hasOwnProperty(uid)) {
     if (!reqs[uid]) return
     reqs[uid].abort()
     delete reqs[uid]
   }
-})
+}
 
 /**
  * customError
@@ -215,5 +223,7 @@ function presign (presignUrl, token, fn = presignRequest) {
 export {
   presign,
   upload,
-  customError
+  customError,
+  deleteXHRRequest,
+  getXHRRequests
 }
