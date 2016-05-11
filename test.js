@@ -1,6 +1,7 @@
 
 import test from 'blue-tape'
-import { upload, presign, customError } from './src'
+import { upload, presign, customError, getXHRRequests, setXHRRequests, abortXHRRequest } from './src'
+import isEqual from 'lodash.isequal'
 
 const token = ''
 const url = 'www.foo.com'
@@ -23,6 +24,8 @@ const file = {
   size: 214179,
   type: 'image/jpeg'
 }
+
+const noOp = (_) => {}
 
 /**
  * presign
@@ -159,4 +162,46 @@ test('Custom error message:', (nest) => {
     t.equal(error.name, 'presignRequest')
     t.end()
   })
+})
+
+/**
+ * Set requests
+ */
+
+test('Set Requests:', (t) => {
+  const expected = {one: 'foo'}
+  const actual = setXHRRequests(expected)
+  t.ok(isEqual(actual, expected), 'match')
+  t.end()
+})
+
+/**
+ * Get requests
+ */
+
+test('Get Requests:', (t) => {
+  const actual = getXHRRequests()
+  const expected = {one: 'foo'}
+  t.ok(isEqual(actual, expected), 'match')
+  t.end()
+})
+
+/**
+ * Abort request
+ */
+
+test('Abort Requests:', (t) => {
+  const actual = getXHRRequests()
+  let expected = {one: 'foo'}
+  t.ok(isEqual(actual, expected), 'match')
+
+  // add additional requests
+  expected = setXHRRequests({two: 'bar', three: 'baz'})
+
+  // abort 'two' from the requests
+  const updated = abortXHRRequest('two', noOp)
+  delete expected.two
+
+  t.ok(isEqual(updated, expected), 'match')
+  t.end()
 })
