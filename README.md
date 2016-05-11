@@ -88,9 +88,15 @@ On success, this request will return:
 * `bytes`
 
 ```js
+
+function customProgressHandler (progressEvent, file) {
+  console.log('Uploading ' + file.name + ' @ ' + progressEvent.percent + '%')
+  //=> 'Uploading foo.jpg @ 100%'
+}
+
 presign(presign_url)
   .then((presignResponse) => {
-    return upload(presignResponse, fileObject)
+    return upload(presignResponse, fileObject, customProgressHandler)
   })
   .then((uploadResponse) => {
     // {
