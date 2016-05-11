@@ -169,6 +169,11 @@ The custom error objects look like this:
 }
 ```
 
+The 3 custom error names we cater for are:
+* `presignRequest` - Rejected presign
+* `uploadRequest` - Rejected upload
+* `responseStatus` - A failing XHR response status
+
 All other errors should be left to bubble up and logged to the console.
 
 #### Example
