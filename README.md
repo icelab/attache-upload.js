@@ -93,12 +93,12 @@ getXHRRequests()
 
 ```
 
-#### destroyXHRRequest(String)
+#### abortXHRRequest(String)
 
 To abort an existing XHR requests use `destroyXHRRequest()` passing in the id of the request.
 
 ```js
-import {getXHRRequests, destroyXHRRequest} from 'attache-upload'
+import {getXHRRequests, abortXHRRequest} from 'attache-upload'
 
 getXHRRequests()
 
@@ -109,9 +109,15 @@ getXHRRequests()
   }
  */
 
-destroyXHRRequest('some_uid')
+abortXHRRequest('some_uid')
 
 getXHRRequests()
+
+/*
+  {
+    'some_other_request': Request
+  }
+ */
 
 ```
 
