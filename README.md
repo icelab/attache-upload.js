@@ -53,12 +53,24 @@ On success, this request will return:
  * `expiration` - a unix timestamp of a future time
  * `hmac` - the `HMAC-SHA1` of your `SECRET_KEY`
 
+```js
+presign(presign_url, token)
+  .then((presignResponse) => {
+    // {
+    //   url: "http://path_to_your_attache_serve/upload",
+    //   uuid: "5f0d4d62-e082-4cdf-a143-26258de59c47",
+    //   expiration: 1461649282,
+    //   hmac: "fd89637821afca1787dfe458be29bc87f0366122"
+    // }
+  })
+```
+
 #### upload(options)
 
  * `presignResponse` - required, response object passed in from presign request.
  * `fileObject` - required.  
- An object containing a [uid](#generate-a-uid-for-your-file-object) and `file` property.
- We use this `uid` as a reference to this object's XHR request, which can then be aborted at a later stage using `destroyXHRRequest('uid')`
+ An object containing a [uid](#generate-a-uid-for-your-file-object) and `file` property.  
+ We use this `uid` as a reference to this object's XHR request, which can then be aborted at a later stage using `abortXHRRequest('uid')`
 
  ```js
  {
@@ -75,6 +87,20 @@ On success, this request will return:
 * `geometry`
 * `bytes`
 
+```js
+presign(presign_url)
+  .then((presignResponse) => {
+    return upload(presignResponse, fileObject)
+  })
+  .then((uploadResponse) => {
+    // {
+    //   path: "54/4d/15/14/b4/09/29/01/36/42/2f/e2/3f/f0/42/15/some_file.jpg",
+    //   content_type: "image/jpeg",
+    //   geometry: "300x300",
+    //   bytes: 19804
+    // }
+  })
+```
 #### getXHRRequests()
 
 To access all existing XHR requests use `getXHRRequests()`.
@@ -121,7 +147,7 @@ getXHRRequests()
 
 ```
 
-### Handling errors
+## Error handling
 
 Both `presign` the `upload` methods will return a custom error objects if either `promise` is rejected.  
 The XHR requests for each method will return a custom `responseStatus` error message if the response status is not between `200` and `300`.  
@@ -163,10 +189,10 @@ presign(presign_url)
   })
 ```
 
-### Generate a `uid` for your file object
+## Generate a `uid` for your file object
 
-Some files may have the same name, so it would be great if we had a unique way of identifying them.  
-Creating a `uid` for your file object could be as simple as:
+Some files may have the same name, so it would be great if we had a unique way of identifying them and their XHR request.
+Creating a `uid` for your file object is as simple as:
 
 ```js
 import uid from 'uid'
