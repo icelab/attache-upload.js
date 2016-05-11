@@ -57,7 +57,7 @@ On success, this request will return:
 
  * `presignResponse` - required, response object passed in from presign request.
  * `fileObject` - required.  
- An object containing a `uid` and `file` property.
+ An object containing a [uid](#generate-a-uid-for-your-file-object) and `file` property.
  We use this `uid` as a reference to this object's XHR request, which can then be aborted at a later stage using `destroyXHRRequest('uid')`
 
  ```js
@@ -66,7 +66,6 @@ On success, this request will return:
      file: FILE // File object
  }
  ```
- [How do I create a `uid`](#generate-a-uid-for-your-file-object)
  * `onProgress` - optional, `onProgress` function.
 
 On success, this request will return:
