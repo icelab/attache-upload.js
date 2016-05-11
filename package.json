@@ -17,7 +17,9 @@
   },
   "keywords": [
     "attache",
-    "upload"
+    "upload",
+    "file-upload",
+    "file"
   ],
   "authors": [
     "Max Wheeler <max@icelab.com.au> (https://github.com/makenosound)",
