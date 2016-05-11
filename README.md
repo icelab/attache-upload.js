@@ -115,13 +115,10 @@ To access all existing XHR requests use `getXHRRequests()`.
 import {getXHRRequests} from 'attache-upload'
 
 getXHRRequests()
-
-/*
-  {
-    'some_uid': request(){},
-    'some_other_request':  request(){}
-  }
- */
+// {
+//   'some_uid': request(){},
+//   'some_other_request':  request(){}
+// }
 
 ```
 
@@ -133,23 +130,17 @@ To abort an existing XHR requests use `destroyXHRRequest()` passing in the id of
 import {getXHRRequests, abortXHRRequest} from 'attache-upload'
 
 getXHRRequests()
-
-/*
-  {
-    'some_uid': Request,
-    'some_other_request': Request
-  }
- */
+// {
+//   'some_uid': request(){},
+//   'some_other_request':  request(){}
+// }
 
 abortXHRRequest('some_uid')
 
 getXHRRequests()
-
-/*
-  {
-    'some_other_request': Request
-  }
- */
+// {
+//   'some_other_request':  request(){}
+// }
 
 ```
 
