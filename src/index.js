@@ -27,16 +27,36 @@ function getXHRRequests () {
 }
 
 /**
- * deleteXHRRequest
- * Abort a XHR request by 'uid'
- * @param  {String} uid
+ * setXHRRequests
+ * Assign an object to `reqs`
+ * @param {Object} object
+ * @return {Object}
  */
 
-function deleteXHRRequest (uid) {
+function setXHRRequests (object) {
+  Object.assign(reqs, object)
+  return reqs
+}
+
+/**
+ * abortXHRRequest
+ * Abort a XHR request by 'uid'
+ * @param {String} uid
+ * @param {Function} optional function
+ * @return {Object}
+ */
+
+function abortXHRRequest (uid, fn) {
   if (reqs.hasOwnProperty(uid)) {
     if (!reqs[uid]) return
-    reqs[uid].abort()
+
+    if (fn) {
+      fn()
+    } else {
+      reqs[uid].abort()
+    }
     delete reqs[uid]
+    return reqs
   }
 }
 
@@ -224,6 +244,7 @@ export {
   presign,
   upload,
   customError,
-  deleteXHRRequest,
-  getXHRRequests
+  abortXHRRequest,
+  getXHRRequests,
+  setXHRRequests
 }
