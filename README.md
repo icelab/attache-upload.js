@@ -80,7 +80,7 @@ On success, this request will return:
 
 To access all existing XHR requests use `getXHRRequests()`.
 
-```
+```js
 import {getXHRRequests} from 'attache-upload'
 
 getXHRRequests()
@@ -98,7 +98,7 @@ getXHRRequests()
 
 To abort an existing XHR requests use `destroyXHRRequest()` passing in the id of the request.
 
-```
+```js
 import {getXHRRequests, destroyXHRRequest} from 'attache-upload'
 
 getXHRRequests()
