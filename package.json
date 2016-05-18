@@ -8,8 +8,8 @@
     "lint": "standard index.js test.js",
     "test": "babel-node test | faucet",
     "posttest": "npm run lint",
-    "compile": "babel --presets babel-preset-es2015 src --out-dir lib",
-    "postcompile": "npm run lint"
+    "build": "babel --presets babel-preset-es2015 src --out-dir lib",
+    "postbuild": "npm run lint"
   },
   "repository": {
     "type": "git",
