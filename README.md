@@ -39,6 +39,12 @@ presign(presign_url)
   })
 ```
 
+## Install
+
+```bash
+$ npm install --save attache-upload
+```
+
 ## API Documentation
 
 #### presign(options)
@@ -211,6 +217,24 @@ function generateUniqueID (name) {
 
 const myUID = generateUniqueID(file.name)
 //> hbswt489ts_image.jpg
+```
+# Development
+
+## Build
+
+Compile `src` scripts to `lib`:
+
+```bash
+$ npm run build
+```
+
+## Tests
+
+  To run the test suite, first install the dependencies, then run `npm test`:
+
+```bash
+$ npm install
+$ npm test
 ```
 
 [npm-image]: https://img.shields.io/npm/v/attache-upload.svg?style=flat-square
