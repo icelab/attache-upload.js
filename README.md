@@ -25,14 +25,21 @@ presign(presign_url)
   })
   .then((uploadResponse) => {
 
-    // Do something with the uploadResponse
-    // uploadResponse:
-    // {
-    //   path: "54/4d/15/14/b4/09/29/01/36/42/2f/e2/3f/f0/42/15/some_file.jpg",
-    //   content_type: "image/jpeg",
-    //   geometry: "300x300",
-    //   bytes: 19804
-    // }
+    // Do something with the 'uploadResponse' array.
+    //
+    // uploadResponse[0] = the attache server response
+    // uploadResponse[1] = the url the file was uploaded to.
+    //
+    // [
+    //   {
+    //     path: "54/4d/15/14/b4/09/29/01/36/42/2f/e2/3f/f0/42/15/some_file.jpg",
+    //     content_type: "image/jpeg",
+    //     geometry: "300x300",
+    //     bytes: 19804
+    //   },
+    //   "http://path_to_your_attache_serve/upload"
+    // ]
+
   })
   .catch((err) => {
     // Handle error
@@ -86,12 +93,17 @@ presign(presign_url, token)
  ```
  * `onProgress` - optional, `onProgress` function.
 
-On success, this request will return:
+On success, this request will return an array.
+
+The first value of the array will be the response from the attache server:
 
 * `path` - a unique path for the uploaded file
 * `content_type`
 * `geometry`
 * `bytes`
+
+The 2nd value of the array is the URL the file was uploaded to (the same returned from the presign response).  
+Useful for building paths for thumbnails, original files, etc.
 
 ```js
 
@@ -105,12 +117,15 @@ presign(presign_url)
     return upload(presignResponse, fileObject, customProgressHandler)
   })
   .then((uploadResponse) => {
-    // {
-    //   path: "54/4d/15/14/b4/09/29/01/36/42/2f/e2/3f/f0/42/15/some_file.jpg",
-    //   content_type: "image/jpeg",
-    //   geometry: "300x300",
-    //   bytes: 19804
-    // }
+    // [
+    //   {
+    //     path: "54/4d/15/14/b4/09/29/01/36/42/2f/e2/3f/f0/42/15/some_file.jpg",
+    //     content_type: "image/jpeg",
+    //     geometry: "300x300",
+    //     bytes: 19804
+    //   },
+    //   "http://path_to_your_attache_serve/upload"
+    // ]
   })
 ```
 #### getXHRRequests()

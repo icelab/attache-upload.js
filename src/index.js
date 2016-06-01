@@ -78,7 +78,9 @@ function customError (name, error) {
 
 /**
  * responseStatus
- * take a response and check it's `status` property
+ * take a response and check if it's an array or not.
+ * 'uploadRequest()' returns an array [response, url]
+ * check the response `status` property
  * if between 200-300 return the response object
  * else throw a custom error
  * @param  {Object} res
@@ -86,24 +88,37 @@ function customError (name, error) {
  */
 
 function responseStatus (res) {
-  if (res.status >= 200 && res.status < 300) {
+
+  let response = Array.isArray(res)
+    ? res[0]
+    : res
+
+  if (response.status >= 200 && response.status < 300) {
     return res
   } else {
-    let error = new Error(res.statusText)
-    error.response = res
+    let error = new Error(response.statusText)
+    error.response = response
     throw customError ('responseStatus', error)
   }
 }
 
 /**
  * parseJSON
- * Take a response object and return it parsed
+ * Take a response object.
+ * Check if it's an array.
+ * 'uploadRequest()' returns an array [response, url]
+ * and return the parsed res.text
  * @param  {String} response
  * @return {Object}
  */
 
-function parseJSON (res, url) {
-  return JSON.parse(res.text)
+function parseJSON (res) {
+  if (Array.isArray(res)) {
+    res[0] = JSON.parse(res[0].text)
+    return res
+  } else {
+    return JSON.parse(res.text)
+  }
 }
 
 /**
@@ -137,11 +152,11 @@ function buildUploadURL (url, uuid, expiration, hmac, filename) {
 function uploadRequest (res, fileObject, showProgress) {
   const { url, expiration, hmac, uuid } = res
   const { file, uid } = fileObject
-  const uploadURL = buildUploadURL(url, uuid, expiration, hmac, file.name)
+  const upload_url = buildUploadURL(url, uuid, expiration, hmac, file.name)
 
   return new Promise((resolve, reject) => {
     reqs[uid] = request
-      .put(uploadURL)
+      .put(upload_url)
       .send(file)
       .set({
         'Accept': 'application/json',
@@ -156,12 +171,8 @@ function uploadRequest (res, fileObject, showProgress) {
         // throw a custom error message
         if (err) return reject(customError('uploadRequest', err))
 
-        // append the `uploadURL` to the response
-        let response = Object.assign({}, res)
-        let data = JSON.parse(res.text)
-        data.uploadURL = url
-        response.text = JSON.stringify(data)
-        resolve(response)
+        // return and array with the response and the URL is was uploaded to
+        resolve([res, url])
       })
   })
 }
@@ -241,6 +252,8 @@ function presign (presignUrl, token, fn = presignRequest) {
 }
 
 export {
+  responseStatus,
+  parseJSON,
   presign,
   upload,
   customError,

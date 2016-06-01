@@ -1,7 +1,17 @@
 
 import test from 'blue-tape'
-import { upload, presign, customError, getXHRRequests, setXHRRequests, abortXHRRequest } from './src'
 import isEqual from 'lodash.isequal'
+
+import {
+  responseStatus,
+  parseJSON,
+  upload,
+  presign,
+  customError,
+  getXHRRequests,
+  setXHRRequests,
+  abortXHRRequest
+} from './src'
 
 const token = ''
 const url = 'www.foo.com'
@@ -204,4 +214,46 @@ test('Abort Requests:', (t) => {
 
   t.ok(isEqual(updated, expected), 'match')
   t.end()
+})
+
+/**
+ * responseStatus
+ */
+
+test('responseStatus:', (nest) => {
+  nest.test('...receive an object', (t) => {
+    const response = {status: 200}
+    const expected = response
+    const actual = responseStatus(response)
+    t.ok(isEqual(actual, expected), 'match')
+    t.end()
+  })
+
+  nest.test('...receive an array', (t) => {
+    const response = [{status: 200}, 'string']
+    const expected = response
+    const actual = responseStatus(response)
+    t.ok(isEqual(actual, expected), 'match')
+    t.end()
+  })
+})
+
+/**
+ * parseJSON
+ */
+
+test('parseJSON:', (nest) => {
+  nest.test('...receive an object', (t) => {
+    const expected = {foo: 'bar'}
+    const actual = {text: '{"foo": "bar"}'}
+    t.ok(isEqual(parseJSON(actual), expected), 'match')
+    t.end()
+  })
+
+  nest.test('...receive an array', (t) => {
+    const expected = [{foo: 'bar'}, 'string']
+    const actual = [{text: '{"foo": "bar"}'}, 'string']
+    t.ok(isEqual(parseJSON(actual), expected), 'match')
+    t.end()
+  })
 })
