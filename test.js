@@ -220,40 +220,21 @@ test('Abort Requests:', (t) => {
  * responseStatus
  */
 
-test('responseStatus:', (nest) => {
-  nest.test('...receive an object', (t) => {
-    const response = {status: 200}
-    const expected = response
-    const actual = responseStatus(response)
-    t.ok(isEqual(actual, expected), 'match')
-    t.end()
-  })
-
-  nest.test('...receive an array', (t) => {
-    const response = [{status: 200}, 'string']
-    const expected = response
-    const actual = responseStatus(response)
-    t.ok(isEqual(actual, expected), 'match')
-    t.end()
-  })
+test('responseStatus:', (t) => {
+  const response = {status: 200}
+  const expected = response
+  const actual = responseStatus(response)
+  t.ok(isEqual(actual, expected), 'match')
+  t.end()
 })
 
 /**
  * parseJSON
  */
 
-test('parseJSON:', (nest) => {
-  nest.test('...receive an object', (t) => {
-    const expected = {foo: 'bar'}
-    const actual = {text: '{"foo": "bar"}'}
-    t.ok(isEqual(parseJSON(actual), expected), 'match')
-    t.end()
-  })
-
-  nest.test('...receive an array', (t) => {
-    const expected = [{foo: 'bar'}, 'string']
-    const actual = [{text: '{"foo": "bar"}'}, 'string']
-    t.ok(isEqual(parseJSON(actual), expected), 'match')
-    t.end()
-  })
+test('parseJSON:', (t) => {
+  const expected = {foo: 'bar'}
+  const actual = {text: '{"foo": "bar"}'}
+  t.ok(isEqual(parseJSON(actual), expected), 'match')
+  t.end()
 })

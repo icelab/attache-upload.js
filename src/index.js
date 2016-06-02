@@ -78,9 +78,7 @@ function customError (name, error) {
 
 /**
  * responseStatus
- * take a response and check if it's an array or not.
- * 'uploadRequest()' returns an array [response, url]
- * check the response `status` property
+ * take a response and check the response `status` property
  * if between 200-300 return the response object
  * else throw a custom error
  * @param  {Object} res
@@ -88,37 +86,24 @@ function customError (name, error) {
  */
 
 function responseStatus (res) {
-
-  let response = Array.isArray(res)
-    ? res[0]
-    : res
-
-  if (response.status >= 200 && response.status < 300) {
+  if (res.status >= 200 && res.status < 300) {
     return res
   } else {
-    let error = new Error(response.statusText)
-    error.response = response
+    let error = new Error(res.statusText)
+    error.response = res
     throw customError ('responseStatus', error)
   }
 }
 
 /**
  * parseJSON
- * Take a response object.
- * Check if it's an array.
- * 'uploadRequest()' returns an array [response, url]
- * and return the parsed res.text
+ * Take a response object and return the parsed res.text
  * @param  {String} response
  * @return {Object}
  */
 
 function parseJSON (res) {
-  if (Array.isArray(res)) {
-    res[0] = JSON.parse(res[0].text)
-    return res
-  } else {
-    return JSON.parse(res.text)
-  }
+  return JSON.parse(res.text)
 }
 
 /**
@@ -171,8 +156,7 @@ function uploadRequest (res, fileObject, showProgress) {
         // throw a custom error message
         if (err) return reject(customError('uploadRequest', err))
 
-        // return and array with the response and the URL is was uploaded to
-        resolve([res, url])
+        resolve(res)
       })
   })
 }

@@ -14,8 +14,9 @@ presign(presign_url)
   .then((presignResponse) => {
 
     // presignResponse:
+    //
     // {
-    //   url: "http://path_to_your_attache_serve/upload",
+    //   url: "http://path_to_your_attache_server/upload",
     //   uuid: "5f0d4d62-e082-4cdf-a143-26258de59c47",
     //   expiration: 1461649282,
     //   hmac: "fd89637821afca1787dfe458be29bc87f0366122"
@@ -25,20 +26,14 @@ presign(presign_url)
   })
   .then((uploadResponse) => {
 
-    // Do something with the 'uploadResponse' array.
+    // uploadResponse:
     //
-    // uploadResponse[0] = the attache server response
-    // uploadResponse[1] = the url the file was uploaded to.
-    //
-    // [
-    //   {
-    //     path: "54/4d/15/14/b4/09/29/01/36/42/2f/e2/3f/f0/42/15/some_file.jpg",
-    //     content_type: "image/jpeg",
-    //     geometry: "300x300",
-    //     bytes: 19804
-    //   },
-    //   "http://path_to_your_attache_serve/upload"
-    // ]
+    // {
+    //   path: "54/4d/15/14/b4/09/29/01/36/42/2f/e2/3f/f0/42/15/some_file.jpg",
+    //   content_type: "image/jpeg",
+    //   geometry: "300x300",
+    //   bytes: 19804
+    // }
 
   })
   .catch((err) => {
@@ -70,7 +65,7 @@ On success, this request will return:
 presign(presign_url, token)
   .then((presignResponse) => {
     // {
-    //   url: "http://path_to_your_attache_serve/upload",
+    //   url: "http://path_to_your_attache_server/upload",
     //   uuid: "5f0d4d62-e082-4cdf-a143-26258de59c47",
     //   expiration: 1461649282,
     //   hmac: "fd89637821afca1787dfe458be29bc87f0366122"
@@ -93,17 +88,12 @@ presign(presign_url, token)
  ```
  * `onProgress` - optional, `onProgress` function.
 
-On success, this request will return an array.
-
-The first value of the array will be the response from the attache server:
+On success, this request will return:
 
 * `path` - a unique path for the uploaded file
 * `content_type`
 * `geometry`
 * `bytes`
-
-The 2nd value of the array is the URL the file was uploaded to (the same returned from the presign response).  
-Useful for building paths for thumbnails, original files, etc.
 
 ```js
 
@@ -117,15 +107,12 @@ presign(presign_url)
     return upload(presignResponse, fileObject, customProgressHandler)
   })
   .then((uploadResponse) => {
-    // [
-    //   {
-    //     path: "54/4d/15/14/b4/09/29/01/36/42/2f/e2/3f/f0/42/15/some_file.jpg",
-    //     content_type: "image/jpeg",
-    //     geometry: "300x300",
-    //     bytes: 19804
-    //   },
-    //   "http://path_to_your_attache_serve/upload"
-    // ]
+    // {
+    //   path: "54/4d/15/14/b4/09/29/01/36/42/2f/e2/3f/f0/42/15/some_file.jpg",
+    //   content_type: "image/jpeg",
+    //   geometry: "300x300",
+    //   bytes: 19804
+    // }
   })
 ```
 #### getXHRRequests()
