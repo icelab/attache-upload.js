@@ -148,7 +148,7 @@ function uploadRequest (res, fileObject, showProgress) {
         'Content-Type': 'application/json'
       })
       .on('progress', (e) => {
-        showProgress(e, file)
+        showProgress(e, fileObject)
       })
       .end((err, res) => {
         delete reqs[uid]
